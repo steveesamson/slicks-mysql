@@ -43,9 +43,7 @@ Using slicks-mysql is pure joy:
 
 ##slicks-mysql management
 
-Now that we have a valid `db` object, how do we manage it? Well, all connections on `db` are automatically pooled, thus:
-
-To release a `db` object, it is done with `db.release()`; this returns the current connection on the `db` to the pool, however, to actually close the connection, use `db.destroy()`; this does the cleanup and closes the underlying connection to database.
+Now that we have a valid `db` object, how do we manage it? Well, all connections on `db` are automatically pooled, thus, to release a `db` object, it is done with `db.release()`; this returns the current connection on the `db` to the pool, however, to actually close the connection, use `db.destroy()`; this does the cleanup and closes the underlying connection to database.
 
 
 ##`fetch`ing records
