@@ -488,6 +488,7 @@ Same as below:
 
 
 ##Test
+Before running the tests, load the included script **test_scripts.sql** onto your mysql database. Ensure to load the script as 'root' for you need to grant privileges. Thereafter, run;
 
 ```cli
     npm test

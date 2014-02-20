@@ -1,16 +1,18 @@
 /**
  * Created by steve Samson <stevee.samson@gmail.com> on 2/10/14.
+ *
  */
+
 var chai = require('chai'),
     should = require('chai').should(),
 //change the config appropriately for your database
     slicks_mysql = require('../dist/slicks-mysql')({
         host: 'localhost',
-        user: 'developer',
+        user: 'tester',
         dateStrings: true,
         driver: 'mysql',
         database: 'todo',
-        password: 'd3v3l0p3r'
+        password: 'tester'
 //        ,
 //        debug_db: true
     }),
