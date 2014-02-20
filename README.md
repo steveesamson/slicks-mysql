@@ -1,9 +1,10 @@
 #slicks-mysql
 
-slicks-mysql allows the expressive writing of database queries and routines. slicks-mysql permit chaining, which is intuitive as you can nearly guess what should come next even if you are just getting started with slicks-mysql. slicks-mysql is not an ORM. It was developed to allow folks coming from relational databases write expressive queries with object interactions in mind.
+slicks-mysql allows the expressive writing of database queries and routines. slicks-mysql permit chaining, which is intuitive as you can nearly guess what should come next even if you are just getting started with slicks-mysql. slicks-mysql is not an ORM. It was developed to allow folks coming from relational databases background write expressive queries with object interactions in mind.
+Inspired by **`Codeigniter Active Record`**.
 
 ##slicks-mysql options
-slicks-mysql takes all the options/config allowed by `node-mysql`. Please https://www.npmjs.org/package/mysql for details. It also has, in addition, `debug_db` option which could be `true/false`. `debug_db` enables the logging of the raw queries to the console when it is set to *true*, useful while developing.
+slicks-mysql takes all the options/config allowed by `node-mysql`. Please see https://www.npmjs.org/package/mysql for details. It also has, in addition, `debug_db` option which could be `true/false`. `debug_db` enables the logging of the raw queries to the console when it is set to *true*, useful while developing.
 
 
 ## Installation
@@ -147,8 +148,8 @@ The above is used when all record fields are needed. However, if a subset of the
          });
 ```
 
-###`where, orWhere, whereIn, orWhereIn, whereNotIn, orWhereNotIn` conditions
-Please, note that all the variations that apply to **`where`** also apply to the following: `orWhere, whereIn, orWhereIn, whereNotIn, orWhereNotIn`.
+###`where`, `orWhere`, `whereIn`, `orWhereIn`, `whereNotIn`, `orWhereNotIn` conditions
+Please, note that all the variations that apply to **`where`** also apply to the following: `orWhere`, `whereIn`, `orWhereIn`, `whereNotIn`, `orWhereNotIn`.
 
 ###`orWhere`
 ```javascript
@@ -366,7 +367,8 @@ Same as below:
 
     db.select('t.*, o.name')
       .from('todu t')
-      .join('task_owners o', 't.task_owner = o.id', 'left') //'left', for left join, also 'right', 'outer' etc are allowed
+      //'left', for left join, also 'right', 'outer' etc are allowed
+      .join('task_owners o', 't.task_owner = o.id', 'left')
       .fetch(function (err, rows) {
             if (err) {
                 throw err;
@@ -444,7 +446,11 @@ Same as below:
 
 ```javascript
 
-    var q = "insert into todu (id, task, task_owner) values (2,'Vacuum the floor',1),(3, 'Iron my shirt', 1)"; //could be more
+    var q = "insert into todu (id, task, task_owner)
+            values
+            (2,'Vacuum the floor',1),
+            (3, 'Iron my shirt', 1)";//could be more
+
         db.query(q, function (err, res) {
             if (err) {
                 throw err;
@@ -458,6 +464,7 @@ Same as below:
 ###`update`ing records
 
 ```javascript
+
        db.set('task', 'Updated Todo')
           .whereIn('id', '1,3')
           .update(function (err, res) {
@@ -471,6 +478,7 @@ Same as below:
 ###`delete`ing records
 
 ```javascript
+
        db.where('id', 2)
          .delete(function (err, res) {
             if (err) {
@@ -481,6 +489,12 @@ Same as below:
 ```
 
 
+##Test
+
+```cli
+    npm test
+```
+
 ## Release History
-* 0.1.0 Initial release
+* 0.1.0 Initial release *
 
