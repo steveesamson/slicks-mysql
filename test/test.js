@@ -444,7 +444,7 @@ describe('#Slicks-MySql', function () {
                 .from('task_owners o')
                 .join('todu t', 't.task_owner = o.id', 'left')
                 .groupBy('o.name')
-                .having('tasks >', 2)
+                .having('count(*) >', 2)
                 .fetch(function (err, rows) {
                     if (err) {
                         throw err;
@@ -468,8 +468,8 @@ describe('#Slicks-MySql', function () {
                 .from('task_owners o')
                 .join('todu t', 't.task_owner = o.id', 'left')
                 .groupBy('o.name')
-                .having('tasks >', 2)
-                .orHaving('tasks', 3)
+                .having('count(*) >', 2)
+                .orHaving('count(*)', 3)
                 .fetch(function (err, rows) {
                     if (err) {
                         throw err;
@@ -502,6 +502,23 @@ describe('#Slicks-MySql', function () {
         });
     });
 
+    describe('#Distinct ', function () {
+        it('Should return 1 as record length', function (done) {
+
+            db.select('task')
+                .distinct()
+                .from('todu')
+                .fetch(function (err, rows) {
+                    if (err) {
+                        throw err;
+                    }
+                    rows.should.have.length(2);
+
+                    done();
+                });
+        });
+    });
+
 
     describe('#Delete ', function () {
         it('Should delete from "todu" table and return 1 as number of affectedRows', function (done) {
@@ -521,88 +538,5 @@ describe('#Slicks-MySql', function () {
 
 
 });
-
-
-//slicks_mysql.connect(function (err, db) {
-//    if (err) {
-//        throw err;
-//    }
-//    console.log('connected to db!');
-//    try {
-//        db.select('o.name, count(*) tasks')
-//            .from('task_owners o')
-//            .join('todu t', 't.task_owner = o.id', 'left')
-//            .groupBy('o.name')
-//            .having('tasks >', 2)
-//            .orHaving('tasks', 4)
-//            .fetch(function (err, rows) {
-//                if (err) {
-//                    console.log('Error: ' + err.message);
-//                    return;
-//                }
-//                console.log(rows);
-//            });
-//        db.select('o.name, count(*) tasks')
-//            .from('task_owners o')
-//            .join('todu t','t.task_owner = o.id','left')
-//            .groupBy('o.name')
-//            .having('tasks >',2)
-//            .orHaving('tasks', 4)
-//            .fetch(function(err, rows){
-//                console.log(rows);
-//                db.destroy();
-//            });
-//
-//        db.where('id', 5).delete('todu', function (err, r) {
-//            console.log(r);
-//            db.destroy();
-//        });
-//
-//
-//        db.select('t.*, o.name')
-//            .from('todu t')
-//            .join('task_owners o', 't.task_owner = o.id', 'left')
-//            .whereIn('o.id', '6,7,9')
-//            .orderBy('t.created_date', 'desc')
-//            .fetch(function (rows) {
-//                console.log(rows);
-//            });
-//
-//        for (var i = 0; i < 10; ++i) {
-//            db.insert('task_owners', {name: 'Task Owner' + (i + 1)}, function (r) {
-//                db.insert('todu', {task: 'Task' + (i + 1), task_owner: r.insertId });
-//            });
-//        }
-//
-//        db.set('task_owner', 3)
-//            .whereIn('id', '11,8,9,10')
-//            .update('todu', function (r) {
-//                console.log(r);
-//                db.destroy();
-//            });
-//
-//        db.like('task', 'out', 'l')
-//            .orLike('task', 'repeated', 'b')
-//            .whereIn('id', '1,3')
-//            .get('todu', function (r) {
-//                console.log(r);
-//                db.release();
-//            });
-//
-//        db.delete('todu', function (r) {
-//            console.log(r);
-//            db.destroy();
-//        });
-//    } catch (e) {
-//        console.log('Error: ' + e);
-//        db.destroy();
-//    }
-//
-//});
-//
-//
-
-
-
 
 

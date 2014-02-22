@@ -1,7 +1,7 @@
 {
     "name": "slicks-mysql",
     "version": "0.1.0",
-    "description": "Allows the writing of expressive database queries.",
+    "description": "Allows the writing of expressive database queries for mysql.",
     "main": "dist/slicks-mysql",
     "scripts": {
         "test": "make test"

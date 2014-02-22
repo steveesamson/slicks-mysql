@@ -1,6 +1,6 @@
 #slicks-mysql
 
-slicks-mysql allows the expressive writing of database queries and routines. slicks-mysql permit chaining, which is intuitive as you can nearly guess what should come next even if you are just getting started with slicks-mysql. slicks-mysql is not an ORM. It was developed to allow folks coming from relational databases background write expressive queries with object interactions in mind.
+slicks-mysql allows the expressive writing of database queries and routines for MySQL. slicks-mysql permit chaining, which is intuitive as you can nearly guess what should come next even if you are just getting started with slicks-mysql. slicks-mysql is not an ORM. It was developed to allow folks coming from relational databases background write expressive queries with object interactions in mind.
 Inspired by **`Codeigniter Active Record`**.
 
 ##slicks-mysql options
@@ -320,6 +320,22 @@ Generates `OR task NOT like '%dishes'` , **`l`** or **`left`**  for left end are
     });
 ```
 
+###Select `distinct`
+
+```javascript
+
+    db.select('task')
+      .distinct()
+      .from('todu')
+      .fetch(function (err, rows) {
+            if (err) {
+                throw err;
+            }
+            console.log(rows);
+        });
+    });
+```
+
 ###`orderBy (desc)`
 
 ```javascript
@@ -399,7 +415,7 @@ Same as below:
       .from('task_owners o')
       .join('todu t', 't.task_owner = o.id', 'left')
       .groupBy('o.name')
-      .having('tasks >', 2)
+      .having('count(*) >', 2)
       .fetch(function (err, rows) {
             if (err) {
                 throw err;
@@ -416,8 +432,8 @@ Same as below:
       .from('task_owners o')
       .join('todu t', 't.task_owner = o.id', 'left')
       .groupBy('o.name')
-      .having('tasks >', 2)
-      .orHaving('tasks', 3)
+      .having('count(*) >', 2)
+      .orHaving('count(*)', 3)
       .fetch(function (err, rows) {
             if (err) {
                 throw err;
@@ -428,7 +444,7 @@ Same as below:
 
 ##`insert`ing records
 
-###`insert` - single record per insert
+###`insert`ing - single record with `insert`
 
 ```javascript
 
@@ -440,7 +456,7 @@ Same as below:
     });
 ```
 
-###inserting multiple records with `query`
+###`insert`ing multiple records with `query`
 
 ```javascript
 
@@ -456,8 +472,6 @@ Same as below:
             console.log('records inserted!');
         });
 ```
-
-
 
 ###`update`ing records
 
@@ -485,7 +499,6 @@ Same as below:
             console.log(res.affectedRows);
         });
 ```
-
 
 ##Test
 Before running the tests, load the included script **test_scripts.sql** onto your mysql database. Ensure to load the script as 'root' for you need to grant privileges. Thereafter, run;

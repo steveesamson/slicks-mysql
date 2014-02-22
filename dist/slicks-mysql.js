@@ -245,12 +245,14 @@ module.exports = function (dbconfig) {
         query: function (q, cb) {
             setLastQuery.call(this, q);
             reset.call(this);
+            if (this.debug) {
+                console.log(this.lastQuery);
+            }
             this.connection.query(this.lastQuery, function (err, result) {
                 if (err) {
                     (cb && cb(err));
                     return;
                 }
-
                 (cb && cb(false, result));
             });
         },
@@ -420,14 +422,19 @@ module.exports = function (dbconfig) {
             setLastQuery.call(this, "%s%s".format(sb.toString(), vsb.toString()));
             reset.call(this);
 
+            if (this.debug) {
+                console.log(this.lastQuery);
+            }
+
             this.connection.query(this.lastQuery, function (err, result) {
                 if (err) {
                     (cb && cb(err));
                     return;
                 }
 
-
-                (cb && cb(false, {id: result.insertId}));
+                var row = {};
+                _.extend(row, options, {id: result.insertId});
+                (cb && cb(false, row));
             });
 
         },
@@ -446,7 +453,7 @@ module.exports = function (dbconfig) {
                         console.log(this.lastQuery);
                     }
                     this.connection.query(this.lastQuery, function (err, rows) {
-                        if (err){
+                        if (err) {
                             (cb && cb(err));
                             return;
                         }
@@ -469,7 +476,7 @@ module.exports = function (dbconfig) {
         update: function (table, cb) {
             if (_.isNull(this.sets) || !this.sets.length) {
 
-                var  err = Error("No fields to be set in update statement.");
+                var err = Error("No fields to be set in update statement.");
                 (cb && cb(err));
                 return;
             }
@@ -479,12 +486,12 @@ module.exports = function (dbconfig) {
                 console.log(this.lastQuery);
             }
             this.connection.query(this.lastQuery, function (err, result) {
-                if (err){
+                if (err) {
                     (cb && cb(err));
                     return;
                 }
 
-                (cb && cb(false,{affectedRows: result.affectedRows}));
+                (cb && cb(false, {affectedRows: result.affectedRows}));
             });
         },
         delete: function (tableName, options, cb) {
@@ -496,7 +503,7 @@ module.exports = function (dbconfig) {
                     console.log(this.lastQuery);
                 }
                 this.connection.query(this.lastQuery, function (err, result) {
-                    if (err){
+                    if (err) {
                         (cb && cb(err));
                         return;
                     }
