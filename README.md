@@ -508,5 +508,5 @@ Before running the tests, load the included script **test_scripts.sql** onto you
 ```
 
 ## Release History
-* 0.1.0 Initial release
+0.1.1
 
