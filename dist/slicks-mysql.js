@@ -1,5 +1,6 @@
 /**
- * Created by steve Samson <stevee.samson@gmail.com> on 2/19/14.
+ * Created by steve Samson <stevee.samson@gmail.com> on February 19, 2014.
+ * Updated on June 21, 2016.
  */
 require('string-format-js');
 var stringbuilder = require('../libs/stringbuilder'),
@@ -8,11 +9,32 @@ var stringbuilder = require('../libs/stringbuilder'),
 
 module.exports = function (dbconfig) {
 
-    String.prototype.endsWith = function (suffix) {
-        return this.indexOf(suffix, this.length - suffix.length) !== -1;
-    };
 
-    var pool = mysql.createPool(dbconfig),
+    if (!String.prototype.endsWith) {
+        String.prototype.endsWith = function (suffix) {
+            return this.indexOf(suffix, this.length - suffix.length) !== -1;
+        };
+    }
+    if (!String.prototype.startsWith) {
+        String.prototype.startsWith = function (prefix) {
+            return this.indexOf(prefix) === 0;
+        };
+    }
+    var makeName = function (str) {
+            var index = str.indexOf('_');
+            if (index < 0) {
+                return str == 'id' ? str.toUpperCase() : (str.charAt(0)).toUpperCase() + str.substring(1);
+            }
+            var names = str.split('_');
+            var new_name = '';
+            names.forEach(function (s) {
+                new_name += new_name.length > 0 ? " " + makeName(s) : makeName(s);
+            });
+
+            return new_name;
+
+        },
+        pool = mysql.createPool(dbconfig),
         connect = function (cb) {
 
             pool.getConnection(function (err, conn) {
@@ -42,13 +64,14 @@ module.exports = function (dbconfig) {
                             console.log('db connection removed');
                         }
                     }
-                }
+                };
                 mysqldb.init();
                 _.extend(mysqldb, db_connection);
 
                 (cb && cb(false, mysqldb));
             });
-        }, poolConnection = function () {
+        },
+        poolConnection = function () {
             var self = this;
             pool.getConnection(function (err, conn) {
                 if (err) {
@@ -68,12 +91,12 @@ module.exports = function (dbconfig) {
         },
         stringWrap = function (o) {
             var raw = toString(o);
+
             return (raw.indexOf("'") != -1) ? raw : "'%s'".format(raw);
         },
         cleantAt = function (string) {
 
             return string.replace(new RegExp("@", 'g'), '%');
-//            return string.replaceAll("@", "%");
         },
         hasOperator = function (string) {
             var has = false;
@@ -219,9 +242,6 @@ module.exports = function (dbconfig) {
         lastQuery: '',
         debug: false,
         connection: null,
-        getLastQuery: function () {
-            return this.lastQuery;
-        },
         distinct: function () {
             this.isdistinct = true;
             return this;
@@ -245,14 +265,12 @@ module.exports = function (dbconfig) {
         query: function (q, cb) {
             setLastQuery.call(this, q);
             reset.call(this);
-            if (this.debug) {
-                console.log(this.lastQuery);
-            }
             this.connection.query(this.lastQuery, function (err, result) {
                 if (err) {
                     (cb && cb(err));
                     return;
                 }
+
                 (cb && cb(false, result));
             });
         },
@@ -262,9 +280,7 @@ module.exports = function (dbconfig) {
         },
         limit: function (lim, offset) {
             this.lim = lim;
-            if (offset) {
-                this.offset = offset;
-            }
+            this.offset = offset || 0;
             return this;
         },
         select: function (select) {
@@ -359,7 +375,6 @@ module.exports = function (dbconfig) {
             addWheres.call(this, cleantAt(entry));
             return this;
         },
-
         notLike: function (column, value, position) {
             var entry = "";
             if (position == 'left' || position == 'l') {
@@ -422,29 +437,38 @@ module.exports = function (dbconfig) {
             setLastQuery.call(this, "%s%s".format(sb.toString(), vsb.toString()));
             reset.call(this);
 
-            if (this.debug) {
-                console.log(this.lastQuery);
-            }
-
             this.connection.query(this.lastQuery, function (err, result) {
                 if (err) {
+
+                    var eString = err.message;
+
+                    if (eString && eString.indexOf('ER_DUP_ENTRY') !== -1) {
+                        var keyIdx = eString.indexOf('key'),
+                            key = eString.substring(keyIdx + 3);
+                        key = key && key.trim().replace(/'/g, '');
+//                        console.log("%s %s",key, keyIdx);
+                        eString = makeName(table) + ' with identical "' + makeName(key) + '" already exists.'
+                        err.message = eString;
+                    }
                     (cb && cb(err));
                     return;
                 }
 
-                var row = {};
-                _.extend(row, options, {id: result.insertId});
-                (cb && cb(false, row));
+                (cb && cb(false, {id: result.insertId}));
             });
 
+        },
+        compile: function () {
+            compileSelect.call(this);
+            return this.lastQuery;
         },
         fetch: function (tableOrCb, cb) {
 
             if (this.mode == Mode.QUERY) {
                 if (_.isFunction(tableOrCb)) {
                     if (_.isNull(this.froms) || !this.froms.length) {
-                        var err = Error("No table specified for select statement.");
-                        (cb && cb(err));
+                        var e = Error("No table specified for select statement.");
+                        (cb && cb(e));
                         return;
                     }
 
@@ -521,13 +545,13 @@ module.exports = function (dbconfig) {
 
         },
         init: function () {
-            this.debug = _.has(dbconfig, 'debug_db');
+            this.debug = dbconfig.debug_db || false;
             return reset.call(this);
         }
     };
 
     return {
         connect: connect
-    }
+    };
 
 };

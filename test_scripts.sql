@@ -1,9 +1,10 @@
 
-CREATE DATABASE todo;
 
-USE todo;
+CREATE DATABASE todo_db;
 
-CREATE TABLE todu (
+USE todo_db;
+
+CREATE TABLE todo (
   id int(10) unsigned NOT NULL AUTO_INCREMENT,
   task varchar(50) NOT NULL,
   status tinyint(1) NOT NULL DEFAULT '0',
@@ -16,6 +17,6 @@ CREATE TABLE task_owners (
   id int(10) unsigned NOT NULL AUTO_INCREMENT,
   name varchar(50) NOT NULL,
   PRIMARY KEY (id)
-) ENGINE=InnoDB; 
+) ENGINE=InnoDB;
 
-GRANT ALL PRIVILEGES ON todo.* to 'tester'@localhost IDENTIFIED BY 'tester';
+GRANT ALL PRIVILEGES ON todo_db.* to 'tester'@'%' IDENTIFIED BY 'tester';

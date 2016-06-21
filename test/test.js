@@ -1,20 +1,19 @@
 /**
- * Created by steve Samson <stevee.samson@gmail.com> on 2/10/14.
- *
+ * Created by steve Samson <stevee.samson@gmail.com> on February 10, 2014.
+ * Updated June 21, 2016.
  */
 
 var chai = require('chai'),
     should = require('chai').should(),
 //change the config appropriately for your database
     slicks_mysql = require('../dist/slicks-mysql')({
-        host: 'localhost',
+        host: 'dserver',
         user: 'tester',
         dateStrings: true,
         driver: 'mysql',
-        database: 'todo',
-        password: 'tester'
-//        ,
-//        debug_db: true
+        database: 'todo_db',
+        password: 'tester',
+        debug_db: false
     }),
     db = null;
 
@@ -46,8 +45,8 @@ describe('#Slicks-MySql', function () {
     });
 
     describe('#Delete with "delete"', function () {
-        it('Should delete all record from "todu" table without error', function (done) {
-            db.delete('todu', function (err, res) {
+        it('Should delete all record from "todo" table without error', function (done) {
+            db.delete('todo', function (err, res) {
                 if (err) {
                     throw err;
                 }
@@ -68,8 +67,8 @@ describe('#Slicks-MySql', function () {
     });
 
     describe('#Insert with "insert" ', function () {
-        it('Should insert into "todu" table without error and return insert id that equals 1', function (done) {
-            db.insert('todu', {id: 1, task: 'Do dishes', task_owner: 1}, function (err, res) {
+        it('Should insert into "todo" table without error and return insert id that equals 1', function (done) {
+            db.insert('todo', {id: 1, task: 'Do dishes', task_owner: 1}, function (err, res) {
                 if (err) {
                     throw err;
                 }
@@ -80,8 +79,8 @@ describe('#Slicks-MySql', function () {
     });
 
     describe('#Insert multiple with "query"', function () {
-        it('Should insert multiple records into "todu" table with "query" without error', function (done) {
-            var q = "insert into todu (id, task, task_owner) values (2,'Vacuum the floor',1),(3, 'Iron my shirt', 1)";
+        it('Should insert multiple records into "todo" table with "query" without error', function (done) {
+            var q = "insert into todo (id, task, task_owner) values (2,'Vacuum the floor',1),(3, 'Iron my shirt', 1)";
             db.query(q, function (err, res) {
                 if (err) {
                     throw err;
@@ -93,8 +92,8 @@ describe('#Slicks-MySql', function () {
     });
 
     describe('#Fetch records', function () {
-        it('Should retrieve all records in "todu"  table with "fetch" without error, records length should be 3', function (done) {
-            db.fetch('todu', function (err, rows) {
+        it('Should retrieve all records in "todo"  table with "fetch" without error, records length should be 3', function (done) {
+            db.fetch('todo', function (err, rows) {
                 if (err) {
                     throw err;
                 }
@@ -106,8 +105,8 @@ describe('#Slicks-MySql', function () {
 
 
     describe('#Query records with "query"', function () {
-        it('Should retrieve all records in "todu"  table with "query" without error, records length should be 3', function (done) {
-            var q = "select * from todu";
+        it('Should retrieve all records in "todo"  table with "query" without error, records length should be 3', function (done) {
+            var q = "select * from todo";
             db.query(q, function (err, rows) {
                 if (err) {
                     throw err;
@@ -120,9 +119,9 @@ describe('#Slicks-MySql', function () {
 
 
     describe('#GreaterThan clause', function () {
-        it('Should retrieve all records with id greater than 1 in "todu"  table with "where >" without error, records length should be 2', function (done) {
+        it('Should retrieve all records with id greater than 1 in "todo"  table with "where >" without error, records length should be 2', function (done) {
             db.where('id >', 1)
-                .fetch('todu', function (err, rows) {
+                .fetch('todo', function (err, rows) {
                     if (err) {
                         throw err;
                     }
@@ -133,9 +132,9 @@ describe('#Slicks-MySql', function () {
     });
 
     describe('#GreaterThanOrEquals clause', function () {
-        it('Should retrieve all records with id greater than  or equals 1 in "todu"  table with "where >=" without error, records length should be 3', function (done) {
+        it('Should retrieve all records with id greater than  or equals 1 in "todo"  table with "where >=" without error, records length should be 3', function (done) {
             db.where('id >=', 1)
-                .fetch('todu', function (err, rows) {
+                .fetch('todo', function (err, rows) {
                     if (err) {
                         throw err;
                     }
@@ -147,9 +146,9 @@ describe('#Slicks-MySql', function () {
 
 
     describe('#LessThan clause', function () {
-        it('Should retrieve all records with id less than 2 in "todu"  table with "where <" without error, records length should be 1', function (done) {
+        it('Should retrieve all records with id less than 2 in "todo"  table with "where <" without error, records length should be 1', function (done) {
             db.where('id <', 2)
-                .fetch('todu', function (err, rows) {
+                .fetch('todo', function (err, rows) {
                     if (err) {
                         throw err;
                     }
@@ -160,9 +159,9 @@ describe('#Slicks-MySql', function () {
     });
 
     describe('#LessThanOrEquals clause', function () {
-        it('Should retrieve all records with id less than  or equals 2 in "todu"  table with "where <=" without error, records length should be 2', function (done) {
+        it('Should retrieve all records with id less than  or equals 2 in "todo"  table with "where <=" without error, records length should be 2', function (done) {
             db.where('id <=', 2)
-                .fetch('todu', function (err, rows) {
+                .fetch('todo', function (err, rows) {
                     if (err) {
                         throw err;
                     }
@@ -173,9 +172,9 @@ describe('#Slicks-MySql', function () {
     });
 
     describe('#Limit clause', function () {
-        it('Should retrieve ONLY 2 records in "todu"  table with "limit" of 2 without error, records length should be 2', function (done) {
+        it('Should retrieve ONLY 2 records in "todo"  table with "limit" of 2 without error, records length should be 2', function (done) {
             db.limit(2)
-                .fetch('todu', function (err, rows) {
+                .fetch('todo', function (err, rows) {
                     if (err) {
                         throw err;
                     }
@@ -186,9 +185,9 @@ describe('#Slicks-MySql', function () {
     });
 
     describe('#OrderBy DESC clause', function () {
-        it('Should retrieve ALL records in "todu"  table with "orderby" of "desc" without error, records length should be 3, first record id should be 3', function (done) {
+        it('Should retrieve ALL records in "todo"  table with "orderby" of "desc" without error, records length should be 3, first record id should be 3', function (done) {
             db.orderBy('id', 'desc')
-                .fetch('todu', function (err, rows) {
+                .fetch('todo', function (err, rows) {
                     if (err) {
                         throw err;
                     }
@@ -200,9 +199,9 @@ describe('#Slicks-MySql', function () {
     });
 
     describe('#OrderBy ASC clause', function () {
-        it('Should retrieve ALL records in "todu"  table with "orderby" of "asc"  without error, records length should be 3, first record id should be 1', function (done) {
+        it('Should retrieve ALL records in "todo"  table with "orderby" of "asc"  without error, records length should be 3, first record id should be 1', function (done) {
             db.orderBy('id', 'asc')
-                .fetch('todu', function (err, rows) {
+                .fetch('todo', function (err, rows) {
                     if (err) {
                         throw err;
                     }
@@ -214,9 +213,9 @@ describe('#Slicks-MySql', function () {
     });
 
     describe('#OrderBy clause', function () {
-        it('Should retrieve ALL records in "todu"  table with just "orderby"  without error, records length should be 3, first record id should be 1', function (done) {
+        it('Should retrieve ALL records in "todo"  table with just "orderby"  without error, records length should be 3, first record id should be 1', function (done) {
             db.orderBy('id')
-                .fetch('todu', function (err, rows) {
+                .fetch('todo', function (err, rows) {
                     if (err) {
                         throw err;
                     }
@@ -228,9 +227,9 @@ describe('#Slicks-MySql', function () {
     });
 
     describe('#Select fields', function () {
-        it('Should retrieve ONLY "id" and "task" from all records in "todu"  table with "select" without error, field "task_owner" should be undefined in any records', function (done) {
+        it('Should retrieve ONLY "id" and "task" from all records in "todo"  table with "select" without error, field "task_owner" should be undefined in any records', function (done) {
             db.select('id, task')
-                .from('todu')
+                .from('todo')
                 .fetch(function (err, rows) {
                     if (err) {
                         throw err;
@@ -243,9 +242,9 @@ describe('#Slicks-MySql', function () {
     });
 
     describe('#Where clause', function () {
-        it('Should retrieve ONLY ONE record, from  "todu"  table, record id should equal 2', function (done) {
+        it('Should retrieve ONLY ONE record, from  "todo"  table, record id should equal 2', function (done) {
             db.select('id, task')
-                .from('todu')
+                .from('todo')
                 .where('id', 2)
                 .fetch(function (err, rows) {
                     if (err) {
@@ -260,9 +259,9 @@ describe('#Slicks-MySql', function () {
     });
 
     describe('#WhereIn clause', function () {
-        it('Should retrieve all records with ids 1 and 3 from  "todu"  table, record length should equal 2', function (done) {
-            db.select('todu.*')
-                .from('todu')
+        it('Should retrieve all records with ids 1 and 3 from  "todo"  table, record length should equal 2', function (done) {
+            db.select('todo.*')
+                .from('todo')
                 .whereIn('id', "1,3")
                 .fetch(function (err, rows) {
                     if (err) {
@@ -276,9 +275,9 @@ describe('#Slicks-MySql', function () {
     });
 
     describe('#OrWhereIn clause', function () {
-        it('Should retrieve all records with ids 1, 2 and 3 from  "todu"  table, record length should equal 3', function (done) {
-            db.select('todu.*')
-                .from('todu')
+        it('Should retrieve all records with ids 1, 2 and 3 from  "todo"  table, record length should equal 3', function (done) {
+            db.select('todo.*')
+                .from('todo')
                 .where('id', 2)
                 .orWhereIn('id', "1,3")
                 .fetch(function (err, rows) {
@@ -293,9 +292,9 @@ describe('#Slicks-MySql', function () {
     });
 
     describe('#WhereNotIn clause', function () {
-        it('Should retrieve all records with ids not amongst 1, 2 and 3 from  "todu"  table, record length should equal 0', function (done) {
-            db.select('todu.*')
-                .from('todu')
+        it('Should retrieve all records with ids not amongst 1, 2 and 3 from  "todo"  table, record length should equal 0', function (done) {
+            db.select('todo.*')
+                .from('todo')
                 .whereNotIn('id', "1,2,3")
                 .fetch(function (err, rows) {
                     if (err) {
@@ -309,9 +308,9 @@ describe('#Slicks-MySql', function () {
     });
 
     describe('#OrWhereNotIn clause', function () {
-        it('Should retrieve all records with ids 2 or ids not amongst 1 and 3 from  "todu"  table, record length should equal 1', function (done) {
-            db.select('todu.*')
-                .from('todu')
+        it('Should retrieve all records with ids 2 or ids not amongst 1 and 3 from  "todo"  table, record length should equal 1', function (done) {
+            db.select('todo.*')
+                .from('todo')
                 .where('id', 2)
                 .orWhereNotIn('id', "1,3")
                 .fetch(function (err, rows) {
@@ -326,9 +325,9 @@ describe('#Slicks-MySql', function () {
     });
 
     describe('#Like clause', function () {
-        it('Should retrieve all records with task like "Vacuum" from  "todu"  table, record length should equal 1', function (done) {
-            db.select('todu.*')
-                .from('todu')
+        it('Should retrieve all records with task like "Vacuum" from  "todo"  table, record length should equal 1', function (done) {
+            db.select('todo.*')
+                .from('todo')
                 .like('task', 'vacuum', 'b')
                 .fetch(function (err, rows) {
                     if (err) {
@@ -342,9 +341,9 @@ describe('#Slicks-MySql', function () {
     });
 
     describe('#OrLike clause', function () {
-        it('Should retrieve all records with task like "Vacuum"  or with task like "iron" from  "todu"  table, record length should equal 2', function (done) {
-            db.select('todu.*')
-                .from('todu')
+        it('Should retrieve all records with task like "Vacuum"  or with task like "iron" from  "todo"  table, record length should equal 2', function (done) {
+            db.select('todo.*')
+                .from('todo')
                 .like('task', 'vacuum', 'b')
                 .orLike('task', 'iron', 'b')
                 .fetch(function (err, rows) {
@@ -359,9 +358,9 @@ describe('#Slicks-MySql', function () {
     });
 
     describe('#NotLike clause', function () {
-        it('Should retrieve all records with task not like "Vacuum" from  "todu"  table, record length should equal 2', function (done) {
-            db.select('todu.*')
-                .from('todu')
+        it('Should retrieve all records with task not like "Vacuum" from  "todo"  table, record length should equal 2', function (done) {
+            db.select('todo.*')
+                .from('todo')
                 .notLike('task', 'vacuum', 'b')
                 .fetch(function (err, rows) {
                     if (err) {
@@ -375,9 +374,9 @@ describe('#Slicks-MySql', function () {
     });
 
     describe('#OrNotLike clause', function () {
-        it('Should retrieve all records with task not like "Vacuum" or task not like "Vacuum" from  "todu"  table, record length should equal 2', function (done) {
-            db.select('todu.*')
-                .from('todu')
+        it('Should retrieve all records with task not like "Vacuum" or task not like "Vacuum" from  "todo"  table, record length should equal 2', function (done) {
+            db.select('todo.*')
+                .from('todo')
                 .where('id', 2)
                 .orNotLike('task', 'dishes', 'b')
                 .fetch(function (err, rows) {
@@ -393,10 +392,10 @@ describe('#Slicks-MySql', function () {
 
     describe('#Join clause', function () {
 
-        it('Should retrieve all records(with ALL fields from todu and the "name" field from task_owners tables) by using "join", record length should equal 3 and field "name" should be defined', function (done) {
+        it('Should retrieve all records(with ALL fields from todo and the "name" field from task_owners tables) by using "join", record length should equal 3 and field "name" should be defined', function (done) {
 
             db.select('t.*, o.name')
-                .from('todu t')
+                .from('todo t')
                 .join('task_owners o', 't.task_owner = o.id', 'left')
                 .fetch(function (err, rows) {
                     if (err) {
@@ -415,11 +414,11 @@ describe('#Slicks-MySql', function () {
 
     describe('#GroupBy clause(Aggregate)', function () {
 
-        it('Should retrieve a single record containing the "name" from "task_owners" table and "tasks" as "todu" counts  from "todu" table for the specific task_owner"  by using "groupby", record length should equal 1 and fields "name"  and "tasks" should be defined', function (done) {
+        it('Should retrieve a single record containing the "name" from "task_owners" table and "tasks" as "todo" counts  from "todo" table for the specific task_owner"  by using "groupby", record length should equal 1 and fields "name"  and "tasks" should be defined', function (done) {
 
             db.select('o.name, count(*) tasks')
                 .from('task_owners o')
-                .join('todu t', 't.task_owner = o.id', 'left')
+                .join('todo t', 't.task_owner = o.id', 'left')
                 .groupBy('o.name')
                 .fetch(function (err, rows) {
                     if (err) {
@@ -438,13 +437,13 @@ describe('#Slicks-MySql', function () {
 
     describe('#Having clause( with Aggregate)', function () {
 
-        it('Should retrieve a single record containing the "name" from "task_owners" table and "tasks" as "todu" counts  from "todu" table with record having "task" greater than 2, record length should equal 1 and fields "name"  and "tasks" should be defined', function (done) {
+        it('Should retrieve a single record containing the "name" from "task_owners" table and "tasks" as "todo" counts  from "todo" table with record having "task" greater than 2, record length should equal 1 and fields "name"  and "tasks" should be defined', function (done) {
 
             db.select('o.name, count(*) tasks')
                 .from('task_owners o')
-                .join('todu t', 't.task_owner = o.id', 'left')
+                .join('todo t', 't.task_owner = o.id', 'left')
                 .groupBy('o.name')
-                .having('count(*) >', 2)
+                .having('tasks >', 2)
                 .fetch(function (err, rows) {
                     if (err) {
                         throw err;
@@ -462,14 +461,14 @@ describe('#Slicks-MySql', function () {
 
     describe('#OrHaving clause( with Aggregate)', function () {
 
-        it('Should retrieve a single record containing the "name" from "task_owners" table and "tasks" as "todu" counts  from "todu" table with record having "tasks" greater than 2 or having "tasks" equals 3, record length should equal 1 and fields "name"  and "tasks" should be defined', function (done) {
+        it('Should retrieve a single record containing the "name" from "task_owners" table and "tasks" as "todo" counts  from "todo" table with record having "tasks" greater than 2 or having "tasks" equals 3, record length should equal 1 and fields "name"  and "tasks" should be defined', function (done) {
 
             db.select('o.name, count(*) tasks')
                 .from('task_owners o')
-                .join('todu t', 't.task_owner = o.id', 'left')
+                .join('todo t', 't.task_owner = o.id', 'left')
                 .groupBy('o.name')
-                .having('count(*) >', 2)
-                .orHaving('count(*)', 3)
+                .having('tasks >', 2)
+                .orHaving('tasks', 3)
                 .fetch(function (err, rows) {
                     if (err) {
                         throw err;
@@ -487,11 +486,11 @@ describe('#Slicks-MySql', function () {
 
 
     describe('#Update ', function () {
-        it('Should update "todu" table. Should return 2 as number of affectedRows', function (done) {
+        it('Should update "todo" table. Should return 2 as number of affectedRows', function (done) {
 
             db.set('task', 'Updated Todo')
                 .whereIn('id', '1,3')
-                .update('todu', function (err, res) {
+                .update('todo', function (err, res) {
                     if (err) {
                         throw err;
                     }
@@ -502,29 +501,12 @@ describe('#Slicks-MySql', function () {
         });
     });
 
-    describe('#Distinct ', function () {
-        it('Should return 1 as record length', function (done) {
-
-            db.select('task')
-                .distinct()
-                .from('todu')
-                .fetch(function (err, rows) {
-                    if (err) {
-                        throw err;
-                    }
-                    rows.should.have.length(2);
-
-                    done();
-                });
-        });
-    });
-
 
     describe('#Delete ', function () {
-        it('Should delete from "todu" table and return 1 as number of affectedRows', function (done) {
+        it('Should delete from "todo" table and return 1 as number of affectedRows', function (done) {
 
             db.where('id', 2)
-            .delete('todu', function (err, res) {
+                .delete('todo', function (err, res) {
                     if (err) {
                         throw err;
                     }
@@ -538,5 +520,3 @@ describe('#Slicks-MySql', function () {
 
 
 });
-
-

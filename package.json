@@ -1,30 +1,27 @@
 {
     "name": "slicks-mysql",
-    "version": "0.1.1",
-    "description": "Allows the writing of expressive database queries and routines for MySQL.",
+    "version": "1.1.0",
+    "description": "Allows the writing of expressive database queries.",
     "main": "dist/slicks-mysql",
     "scripts": {
         "test": "make test"
     },
-    "dependencies": {
-        "mysql": "~2.0.1",
-        "underscore": "~1.5.2",
-        "string-format-js": "~0.1.1"
-    },
     "keywords": [
         "slicks",
-        "slickers",
         "db",
         "database",
         "mysql",
-        "node",
+        "nodejs",
         "javascript"
     ],
     "repository": {
         "type": "git",
         "url": "git://github.com/steveesamson/slicks-mysql.git"
     },
-    "author": "Steve Samson  <stevee.samson@gmail.com>",
+    "author": {
+        "name": "Steve Samson",
+        "email": "stevee.samson@gmail.com"
+    },
     "licenses": [
         {
             "type": "MIT",
@@ -34,5 +31,16 @@
     "devDependencies": {
         "mocha": "~1.17.1",
         "chai": "~1.9.0"
+    },
+    "readmeFilename": "README.md",
+    "bugs": {
+        "url": "https://github.com/steveesamson/slicks-mysql/issues"
+    },
+    "_id": "slicks-mysql@0.1.0",
+    "_from": "slicks-mysql@",
+    "dependencies": {
+        "mysql": "^2.11.1",
+        "string-format-js": "^0.1.8",
+        "underscore": "^1.8.3"
     }
 }

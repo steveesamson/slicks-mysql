@@ -1,6 +1,6 @@
 #slicks-mysql
 
-slicks-mysql allows the expressive writing of database queries and routines for MySQL. slicks-mysql permit chaining, which is intuitive as you can nearly guess what should come next even if you are just getting started with slicks-mysql. slicks-mysql is not an ORM. It was developed to allow folks coming from relational databases background write expressive queries with object interactions in mind.
+slicks-mysql allows the expressive writing of database queries and routines. slicks-mysql permit chaining, which is intuitive as you can nearly guess what should come next even if you are just getting started with slicks-mysql. slicks-mysql is not an ORM. It was developed to allow folks coming from relational databases background write expressive queries with object interactions in mind.
 Inspired by **`Codeigniter Active Record`**.
 
 ##slicks-mysql options
@@ -50,7 +50,7 @@ Now that we have a valid `db` object, how do we manage it? Well, all connections
 
 ```javascript
 
-     db.fetch('todu', function (err, rows) {
+     db.fetch('todo', function (err, rows) {
         if (err) {
             throw err;
         }
@@ -66,7 +66,7 @@ The above is used when all record fields are needed. However, if a subset of the
 ```javascript
 
       db.select('task, task_owner')
-         .from('todu')
+         .from('todo')
          .fetch(function (err, rows) {
              if (err) {
                  throw err;
@@ -79,7 +79,7 @@ The above is used when all record fields are needed. However, if a subset of the
 
 ```javascript
 
-    var q = "select * from todu";
+    var q = "select * from todo";
         db.query(q, function (err, rows) {
             if (err) {
                 throw err;
@@ -94,7 +94,7 @@ The above is used when all record fields are needed. However, if a subset of the
 ```javascript
 
      db.where('id', 1)
-       .fetch('todu', function (err, rows) {
+       .fetch('todo', function (err, rows) {
              if (err) {
                  throw err;
              }
@@ -105,7 +105,7 @@ The above is used when all record fields are needed. However, if a subset of the
 ```javascript
 
      db.where('id >', 1)
-       .fetch('todu', function (err, rows) {
+       .fetch('todo', function (err, rows) {
              if (err) {
                  throw err;
              }
@@ -116,7 +116,7 @@ The above is used when all record fields are needed. However, if a subset of the
 ```javascript
 
      db.where('id <', 10)
-       .fetch('todu', function (err, rows) {
+       .fetch('todo', function (err, rows) {
              if (err) {
                  throw err;
              }
@@ -127,7 +127,7 @@ The above is used when all record fields are needed. However, if a subset of the
 ```javascript
 
      db.where('id >=', 1)
-       .fetch('todu', function (err, rows) {
+       .fetch('todo', function (err, rows) {
              if (err) {
                  throw err;
              }
@@ -138,7 +138,7 @@ The above is used when all record fields are needed. However, if a subset of the
 ```javascript
 
      db.where('id <=', 10)
-       .fetch('todu', function (err, rows) {
+       .fetch('todo', function (err, rows) {
              if (err) {
                  throw err;
              }
@@ -154,7 +154,7 @@ Please, note that all the variations that apply to **`where`** also apply to the
 
      db.where('id', 10)
        .orWhere('task_owner', 1)
-       .fetch('todu', function (err, rows) {
+       .fetch('todo', function (err, rows) {
              if (err) {
                  throw err;
              }
@@ -166,8 +166,8 @@ Please, note that all the variations that apply to **`where`** also apply to the
 
 ```javascript
 
-    db.select('todu.*') //I could have used fetch directly here too
-      .from('todu')
+    db.select('todo.*') //I could have used fetch directly here too
+      .from('todo')
       .whereIn('id', "1,3")
       .fetch(function (err, rows) {
             if (err) {
@@ -181,8 +181,8 @@ Please, note that all the variations that apply to **`where`** also apply to the
 
 ```javascript
 
-    db.select('todu.*') //I could have used fetch directly here too
-      .from('todu')
+    db.select('todo.*') //I could have used fetch directly here too
+      .from('todo')
       .where('id', 2)
       .orWhereIn('id', "1,3")
       .fetch(function (err, rows) {
@@ -197,8 +197,8 @@ Please, note that all the variations that apply to **`where`** also apply to the
 
 ```javascript
 
-    db.select('todu.*') //I could have used fetch directly here too
-      .from('todu')
+    db.select('todo.*') //I could have used fetch directly here too
+      .from('todo')
       .whereNotIn('id', "1,2,3")
       .fetch(function (err, rows) {
             if (err) {
@@ -212,8 +212,8 @@ Please, note that all the variations that apply to **`where`** also apply to the
 
 ```javascript
 
-    db.select('todu.*') //I could have used fetch directly here too
-      .from('todu')
+    db.select('todo.*') //I could have used fetch directly here too
+      .from('todo')
       .where('id', 2)
       .orWhereNotIn('id', "1,3")
       .fetch(function (err, rows) {
@@ -230,8 +230,8 @@ Generates `task like %vacuum%` , **`b`** or **`both`**  for both ends are allowe
 
 ```javascript
 
-    db.select('todu.*') //I could have used fetch directly here too
-      .from('todu')
+    db.select('todo.*') //I could have used fetch directly here too
+      .from('todo')
       .like('task', 'vacuum', 'b')
       .fetch(function (err, rows) {
             if (err) {
@@ -247,8 +247,8 @@ Generates `task like '%vacuum' or task like 'iron%'` , **`l`** or **`left`**  fo
 
 ```javascript
 
-    db.select('todu.*') //I could have used fetch directly here too
-      .from('todu')
+    db.select('todo.*') //I could have used fetch directly here too
+      .from('todo')
       .like('task', 'vacuum', 'l')
       .orLike('task', 'iron', 'r')
       .fetch(function (err, rows) {
@@ -265,8 +265,8 @@ Generates `task NOT like '%vacuum%'` , **`b`** or **`both`**  for both ends are 
 
 ```javascript
 
-    db.select('todu.*') //I could have used fetch directly here too
-      .from('todu')
+    db.select('todo.*') //I could have used fetch directly here too
+      .from('todo')
       .notLike('task', 'vacuum', 'b')
       .fetch(function (err, rows) {
             if (err) {
@@ -282,8 +282,8 @@ Generates `OR task NOT like '%dishes'` , **`l`** or **`left`**  for left end are
 
 ```javascript
 
-    db.select('todu.*') //I could have used fetch directly here too
-      .from('todu')
+    db.select('todo.*') //I could have used fetch directly here too
+      .from('todo')
       .where('id', 2)
       .orNotLike('task', 'dishes', 'l')
       .fetch(function (err, rows) {
@@ -317,22 +317,6 @@ Generates `OR task NOT like '%dishes'` , **`l`** or **`left`**  for left end are
                 throw err;
             }
             console.log(rows);
-    });
-```
-
-###Select `distinct`
-
-```javascript
-
-    db.select('task')
-      .distinct()
-      .from('todu')
-      .fetch(function (err, rows) {
-            if (err) {
-                throw err;
-            }
-            console.log(rows);
-        });
     });
 ```
 
@@ -380,7 +364,7 @@ Same as below:
 ```javascript
 
     db.select('t.*, o.name')
-      .from('todu t')
+      .from('todo t')
       //'left', for left join, also 'right', 'outer' etc are allowed
       .join('task_owners o', 't.task_owner = o.id', 'left')
       .fetch(function (err, rows) {
@@ -397,7 +381,7 @@ Same as below:
 
     db.select('o.name, count(*) tasks')
       .from('task_owners o')
-      .join('todu t', 't.task_owner = o.id', 'left')
+      .join('todo t', 't.task_owner = o.id', 'left')
       .groupBy('o.name')
       .fetch(function (err, rows) {
             if (err) {
@@ -413,9 +397,9 @@ Same as below:
 
     db.select('o.name, count(*) tasks')
       .from('task_owners o')
-      .join('todu t', 't.task_owner = o.id', 'left')
+      .join('todo t', 't.task_owner = o.id', 'left')
       .groupBy('o.name')
-      .having('count(*) >', 2)
+      .having('tasks >', 2)
       .fetch(function (err, rows) {
             if (err) {
                 throw err;
@@ -430,10 +414,10 @@ Same as below:
 
     db.select('o.name, count(*) tasks')
       .from('task_owners o')
-      .join('todu t', 't.task_owner = o.id', 'left')
+      .join('todo t', 't.task_owner = o.id', 'left')
       .groupBy('o.name')
-      .having('count(*) >', 2)
-      .orHaving('count(*)', 3)
+      .having('tasks >', 2)
+      .orHaving('tasks', 3)
       .fetch(function (err, rows) {
             if (err) {
                 throw err;
@@ -444,7 +428,7 @@ Same as below:
 
 ##`insert`ing records
 
-###`insert`ing - single record with `insert`
+###`insert` - single record per insert
 
 ```javascript
 
@@ -456,11 +440,11 @@ Same as below:
     });
 ```
 
-###`insert`ing multiple records with `query`
+###inserting multiple records with `query`
 
 ```javascript
 
-    var q = "insert into todu (id, task, task_owner)
+    var q = "insert into todo (id, task, task_owner)
             values
             (2,'Vacuum the floor',1),
             (3, 'Iron my shirt', 1)";//could be more
@@ -472,6 +456,8 @@ Same as below:
             console.log('records inserted!');
         });
 ```
+
+
 
 ###`update`ing records
 
@@ -500,13 +486,10 @@ Same as below:
         });
 ```
 
+
 ##Test
 Before running the tests, load the included script **test_scripts.sql** onto your mysql database. Ensure to load the script as 'root' for you need to grant privileges. Thereafter, run;
 
 ```cli
     npm test
 ```
-
-## Release History
-0.1.1
-
