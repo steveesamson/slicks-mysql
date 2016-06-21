@@ -1,46 +1,46 @@
 {
-    "name": "slicks-mysql",
-    "version": "1.1.0",
-    "description": "Allows the writing of expressive database queries.",
-    "main": "dist/slicks-mysql",
-    "scripts": {
-        "test": "make test"
-    },
-    "keywords": [
-        "slicks",
-        "db",
-        "database",
-        "mysql",
-        "nodejs",
-        "javascript"
-    ],
-    "repository": {
-        "type": "git",
-        "url": "git://github.com/steveesamson/slicks-mysql.git"
-    },
-    "author": {
-        "name": "Steve Samson",
-        "email": "stevee.samson@gmail.com"
-    },
-    "licenses": [
-        {
-            "type": "MIT",
-            "url": "https://github.com/steveesamson/slicks-mysql/blob/master/MIT-License.txt"
-        }
-    ],
-    "devDependencies": {
-        "mocha": "~1.17.1",
-        "chai": "~1.9.0"
-    },
-    "readmeFilename": "README.md",
-    "bugs": {
-        "url": "https://github.com/steveesamson/slicks-mysql/issues"
-    },
-    "_id": "slicks-mysql@0.1.0",
-    "_from": "slicks-mysql@",
-    "dependencies": {
-        "mysql": "^2.11.1",
-        "string-format-js": "^0.1.8",
-        "underscore": "^1.8.3"
+  "name": "slicks-mysql",
+  "version": "1.2.0",
+  "description": "Allows the writing of expressive database queries.",
+  "main": "dist/slicks-mysql",
+  "scripts": {
+    "test": "make test"
+  },
+  "keywords": [
+    "slicks",
+    "db",
+    "database",
+    "mysql",
+    "nodejs",
+    "javascript"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/steveesamson/slicks-mysql.git"
+  },
+  "author": {
+    "name": "Steve Samson",
+    "email": "stevee.samson@gmail.com"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/steveesamson/slicks-mysql/blob/master/MIT-License.txt"
     }
+  ],
+  "devDependencies": {
+    "mocha": "~1.17.1",
+    "chai": "~1.9.0"
+  },
+  "readmeFilename": "README.md",
+  "bugs": {
+    "url": "https://github.com/steveesamson/slicks-mysql/issues"
+  },
+  "_id": "slicks-mysql@0.1.0",
+  "_from": "slicks-mysql@",
+  "dependencies": {
+    "mysql": "^2.11.1",
+    "string-format-js": "^0.1.8",
+    "underscore": "^1.8.3"
+  }
 }
