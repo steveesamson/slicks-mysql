@@ -377,7 +377,7 @@ describe('#Slicks-MySql', function () {
         it('Should retrieve all records with task not like "Vacuum" or task not like "Vacuum" from  "todo"  table, record length should equal 2', function (done) {
             db.select('todo.*')
                 .from('todo')
-                .where('id', 2)
+                .like('task', 'vacuum', 'b')
                 .orNotLike('task', 'dishes', 'b')
                 .fetch(function (err, rows) {
                     if (err) {

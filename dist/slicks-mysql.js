@@ -1,6 +1,7 @@
 /**
  * Created by steve Samson <stevee.samson@gmail.com> on February 19, 2014.
  * Updated on June 21, 2016.
+ * Updated on March 13, 2017.
  */
 require('string-format-js');
 var stringbuilder = require('../libs/stringbuilder'),
@@ -117,6 +118,9 @@ module.exports = function (dbconfig) {
         setLastQuery = function (query) {
             this.lastQuery = query;
         },
+        addLikes = function (s) {
+            this.likes.push(s);
+        },
         addWheres = function (s) {
             this.wheres.push(s);
         },
@@ -174,6 +178,20 @@ module.exports = function (dbconfig) {
                 sb.append("WHERE\n")
                     .append(this.wheres.join(" "))
                     .append("\n");
+
+                    //Added
+                if (this.likes.length) {
+                    sb.append("AND (")
+                        .append(this.likes.join(" "))
+                        .append(")\n");
+                }
+                
+            }else{
+                if (this.likes.length) {
+                    sb.append("WHERE\n (")
+                        .append(this.likes.join(" "))
+                        .append(")\n");
+                }
             }
 
             if (!_.isNull(this.groupby) && this.groupby.length) {
@@ -219,6 +237,7 @@ module.exports = function (dbconfig) {
             this.isdistinct = false;
             this.froms = null;
             this.wheres = [];
+            this.likes = [];
             this.selects = null;
             this.joins = [];
             this.groupby = null;
@@ -336,15 +355,16 @@ module.exports = function (dbconfig) {
         like: function (column, value, position) {
             var entry = "";
             if (position == 'left' || position == 'l') {
-                entry = this.wheres.length ? "AND %s LIKE '@%s'".format(column, value) : "%s LIKE '@%s'".format(column, value);
+                //entry = this.wheres.length ? "AND %s LIKE '@%s'".format(column, value) : "%s LIKE '@%s'".format(column, value);
+                entry = this.likes.length ? "AND %s LIKE '@%s'".format(column, value) : "%s LIKE '@%s'".format(column, value);
             }
             if (position == 'right' || position == 'r') {
-                entry = this.wheres.length ? "AND %s LIKE '%s@'".format(column, value) : "%s LIKE '%s@'".format(column, value);
+                entry = this.likes.length ? "AND %s LIKE '%s@'".format(column, value) : "%s LIKE '%s@'".format(column, value);
             }
             if (position == 'both' || position == 'b') {
-                entry = this.wheres.length ? "AND %s LIKE '@%s@'".format(column, value) : "%s LIKE '@%s@'".format(column, value);
+                entry = this.likes.length ? "AND %s LIKE '@%s@'".format(column, value) : "%s LIKE '@%s@'".format(column, value);
             }
-            addWheres.call(this, cleantAt(entry));
+            addLikes.call(this, cleantAt(entry));
             return this;
         },
         orLike: function (column, value, position) {
@@ -358,7 +378,7 @@ module.exports = function (dbconfig) {
             if (position == 'both' || position == 'b') {
                 entry = "OR %s LIKE '@%s@'".format(column, value);
             }
-            addWheres.call(this, cleantAt(entry));
+            addLikes.call(this, cleantAt(entry));
             return this;
         },
         orNotLike: function (column, value, position) {
@@ -372,21 +392,21 @@ module.exports = function (dbconfig) {
             if (position == 'both' || position == 'b') {
                 entry = "OR %s  NOT LIKE '@%s@'".format(column, value);
             }
-            addWheres.call(this, cleantAt(entry));
+            addLikes.call(this, cleantAt(entry));
             return this;
         },
         notLike: function (column, value, position) {
             var entry = "";
             if (position == 'left' || position == 'l') {
-                entry = this.wheres.length ? "AND %s NOT LIKE '@%s'".format(column, value) : "%s NOT LIKE '@%s'".format(column, value);
+                entry = this.likes.length ? "AND %s NOT LIKE '@%s'".format(column, value) : "%s NOT LIKE '@%s'".format(column, value);
             }
             if (position == 'right' || position == 'r') {
-                entry = this.wheres.length ? "AND %s  NOT LIKE '%s@'".format(column, value) : "%s  NOT LIKE '%s@'".format(column, value);
+                entry = this.likes.length ? "AND %s  NOT LIKE '%s@'".format(column, value) : "%s  NOT LIKE '%s@'".format(column, value);
             }
             if (position == 'both' || position == 'b') {
-                entry = this.wheres.length ? "AND %s  NOT LIKE '@%s@'".format(column, value) : "%s  NOT LIKE '@%s@'".format(column, value);
+                entry = this.likes.length ? "AND %s  NOT LIKE '@%s@'".format(column, value) : "%s  NOT LIKE '@%s@'".format(column, value);
             }
-            addWheres.call(this, cleantAt(entry));
+            addLikes.call(this, cleantAt(entry));
             return this;
         },
         groupBy: function (columns) {
