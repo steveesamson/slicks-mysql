@@ -5,7 +5,7 @@
   "main": "dist/slicks-mysql",
   "license": "MIT",
   "scripts": {
-    "test": "make test"
+       "test": "./node_modules/mocha/bin/mocha --ui tdd --recursive ./test"
   },
   "keywords": [
     "slicks",

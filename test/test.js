@@ -7,7 +7,7 @@ var chai = require('chai'),
     should = require('chai').should(),
 //change the config appropriately for your database
     slicks_mysql = require('../dist/slicks-mysql')({
-        host: 'dserver',
+        host: 'localhost',
         user: 'tester',
         dateStrings: true,
         driver: 'mysql',
