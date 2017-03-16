@@ -1,6 +1,6 @@
 {
   "name": "slicks-mysql",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Allows the writing of expressive database queries.",
   "main": "dist/slicks-mysql",
   "license": "MIT",
