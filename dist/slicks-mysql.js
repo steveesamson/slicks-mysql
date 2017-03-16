@@ -311,16 +311,16 @@ module.exports = function (dbconfig) {
             return this;
         },
         where: function (column, value) {
-            if (column && value) {
+            if (arguments.length < 2) return this;
 
                 value = _.isString(value) ? stringWrap(value) : toString(value);
                 column = hasOperator(column) ? column : "%s =".format(column);
                 addWheres.call(this, this.wheres.length ? "AND %s %s".format(column, value) : "%s %s".format(column, value));
 
-            } else if (column && !value) {
+            // } else if (column && !value) {
 
-                addWheres.call(this, this.wheres.length ? "AND %s".format(column) : "%s".format(column));
-            }
+            //     addWheres.call(this, this.wheres.length ? "AND %s".format(column) : "%s".format(column));
+            // }
 
             return this;
         },
