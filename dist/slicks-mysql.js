@@ -179,14 +179,14 @@ module.exports = function (dbconfig) {
                     .append(this.wheres.join(" "))
                     .append("\n");
 
-                    //Added
+                //Added
                 if (this.likes.length) {
                     sb.append("AND (")
                         .append(this.likes.join(" "))
                         .append(")\n");
                 }
-                
-            }else{
+
+            } else {
                 if (this.likes.length) {
                     sb.append("WHERE\n (")
                         .append(this.likes.join(" "))
@@ -311,11 +311,15 @@ module.exports = function (dbconfig) {
             return this;
         },
         where: function (column, value) {
-            if (arguments.length < 2) return this;
+            //if (arguments.length < 2) return this;
+            if (arguments.length < 2) {
+                addWheres.call(this, this.wheres.length ? "AND %s".format(column) : "%s".format(column));
+                return this;
+            }
 
-                value = _.isString(value) ? stringWrap(value) : toString(value);
-                column = hasOperator(column) ? column : "%s =".format(column);
-                addWheres.call(this, this.wheres.length ? "AND %s %s".format(column, value) : "%s %s".format(column, value));
+            value = _.isString(value) ? stringWrap(value) : toString(value);
+            column = hasOperator(column) ? column : "%s =".format(column);
+            addWheres.call(this, this.wheres.length ? "AND %s %s".format(column, value) : "%s %s".format(column, value));
 
             // } else if (column && !value) {
 
