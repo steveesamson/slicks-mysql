@@ -482,7 +482,10 @@ module.exports = function (dbconfig) {
             });
 
         },
-        compile: function () {
+        compile: function (tableName) {
+            if(tableName){
+                this.froms = [tableName];
+            }
             compileSelect.call(this);
             return this.lastQuery;
         },
