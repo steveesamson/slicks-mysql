@@ -88,7 +88,7 @@ module.exports = function (dbconfig) {
     var Mode = {QUERY: 'Query', PROC: 'Procedure'},
     //Private static functions
         toString = function (o) {
-            return '' + o.toString();
+            return o? '' + o.toString() : '';
         },
         stringWrap = function (o) {
             var raw = toString(o);
