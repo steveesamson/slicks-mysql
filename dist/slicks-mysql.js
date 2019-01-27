@@ -45,6 +45,8 @@ module.exports = function (dbconfig) {
                 }
                 var db_connection = {
                     connection: conn,
+                    cdc:dbconfig.cdc,
+                    maillog:dbconfig.maillog,
                     release: function () {
                         if (this.debug) {
                             console.log('closing db connection...');
@@ -258,6 +260,7 @@ module.exports = function (dbconfig) {
         };
 
     var mysqldb = {
+        storeType: 'mysql',
         lastQuery: '',
         debug: false,
         connection: null,
